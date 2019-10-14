@@ -24,4 +24,4 @@ cd /var/www/html
 # npm install
 # npm run dev
 
-tail -f /dev/null
+#tail -f /dev/null
