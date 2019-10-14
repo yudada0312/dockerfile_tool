@@ -5,11 +5,16 @@ if [ ! -d "$folder" ]; then
   return
 fi
 
-cd $folder
+cd /var/www/html/$1
 
+echo 'chmod -R 777 storage/'
 chmod -R 777 storage/
+echo 'chmod -R 777 bootstrap/cache'
 chmod -R 777 bootstrap/cache
+echo 'chmod 777 bootstrap/'
 chmod 777 bootstrap/
+
+cd $folder
 
 #取代 php artisan storage:link # 圖片上傳套件需要建立軟連結(相對路徑)
 ln -s ../storage/app/public storage
