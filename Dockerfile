@@ -20,10 +20,8 @@ RUN docker-php-ext-install pdo_mysql
 
 ENV WORKDIR /var/www/html
 ENV TMPDIR /var/tmp
-ENV ROOTDIR /root
 
-RUN cd ${ROOTDIR} && mkdir .ssh &&  cd ${TMPDIR} && mkdir db
-COPY .ssh ${ROOTDIR}/.ssh
+COPY entrypoint.sh ${TMPDIR}
 
 WORKDIR ${WORKDIR}
 
