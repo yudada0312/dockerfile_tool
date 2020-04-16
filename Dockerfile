@@ -17,12 +17,16 @@ RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev lib
 
 RUN docker-php-ext-install zip
 RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install bcmath
 
 ENV WORKDIR /var/www/html
 ENV TMPDIR /var/tmp
 
 COPY entrypoint.sh ${TMPDIR}
 
-WORKDIR ${WORKDIR}
+RUN mkdir /root/mobile
 
+WORKDIR ${WORKDIR}
+# for mobile dev
+EXPOSE 8000
 CMD ["/bin/sh", "-c","tail -f /dev/null"]
