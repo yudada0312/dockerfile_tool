@@ -1,8 +1,11 @@
-FROM php:7.2.14-alpine3.8
+FROM php:7.2.14-alpine3.9
 LABEL maintainer="yudada <yudada0312@gmail.com>"
 RUN apk update && apk upgrade && apk add bash git openssh && apk add zlib-dev \
 #apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.9/community/ php7=7.2.22-r0 \
- && apk add composer && apk add nodejs npm && rm /var/cache/apk/*
+ && apk add composer && apk add nodejs npm && apk add tig && rm /var/cache/apk/*
+
+RUN apk add zsh curl wget git && cd /root && sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" \
+ && sed -i -e "s/bin\/ash/bin\/zsh/" /etc/passwd
 
 #Install PHP extensions
 RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev && \
