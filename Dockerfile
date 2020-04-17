@@ -4,8 +4,11 @@ RUN apk update && apk upgrade && apk add bash git openssh && apk add zlib-dev \
 #apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.9/community/ php7=7.2.22-r0 \
  && apk add composer && apk add nodejs npm && apk add tig && rm /var/cache/apk/*
 
-RUN apk add zsh && apk add zsh-vcs && cd /root && sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" \
- && sed -i -e "s/bin\/ash/bin\/zsh/" /etc/passwd
+RUN apk add zsh && apk add zsh-vcs \
+ && cd /root \
+ && sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" \
+ && sed -i -e "s/bin\/ash/bin\/zsh/" /etc/passwd \
+ && git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
 
 #Install PHP extensions
 RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev && \
