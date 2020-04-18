@@ -8,7 +8,7 @@ RUN apk add zsh && apk add zsh-vcs \
  && cd /root \
  && sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" \
  && sed -i -e "s/bin\/ash/bin\/zsh/" /etc/passwd \
- && git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+ && git clone git://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM}/plugins/zsh-autosuggestions
 
 #Install PHP extensions
 RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev && \
