@@ -24,6 +24,7 @@ RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev lib
 RUN docker-php-ext-install zip
 RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install bcmath
+RUN apk add libxml2-dev && docker-php-ext-install soap
 
 ENV WORKDIR /var/www/html
 ENV TMPDIR /var/tmp
