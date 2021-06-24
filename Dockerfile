@@ -1,6 +1,6 @@
-FROM php:7.2.14-alpine3.9
+FROM php:7.4.20-alpine3.13
 LABEL maintainer="yudada <yudada0312@gmail.com>"
-RUN apk update && apk upgrade && apk add bash git openssh && apk add zlib-dev \
+RUN apk update && apk upgrade && apk add bash git openssh && apk add zlib-dev && apk add libzip-dev\
 #apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.9/community/ php7=7.2.22-r0 \
  && apk add composer && apk add nodejs npm && apk add tig && rm /var/cache/apk/*
 
@@ -10,17 +10,28 @@ RUN apk add zsh && apk add zsh-vcs \
  && sed -i -e "s/bin\/ash/bin\/zsh/" /etc/passwd \
  && git clone git://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM}/plugins/zsh-autosuggestions
 
-#Install PHP extensions
-RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev && \
-  docker-php-ext-configure gd \
-    --with-gd \
-    --with-freetype-dir=/usr/include/ \
-    --with-png-dir=/usr/include/ \
-    --with-jpeg-dir=/usr/include/ && \
-  NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) && \
-  docker-php-ext-install -j${NPROC} gd && \
-  apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev
+#Install mongodb
+RUN apk --update add --virtual build-dependencies build-base openssl-dev autoconf \
+  && pecl install mongodb \
+  && docker-php-ext-enable mongodb \
+  && apk del build-dependencies build-base openssl-dev autoconf \
+  && rm -rf /var/cache/apk/*
 
+#Install PHP extensions  intl
+RUN apk add icu-dev && docker-php-ext-configure intl && docker-php-ext-install intl
+
+#  Install PHP extensions gd (php7.3)
+#RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev && \
+  #docker-php-ext-configure gd \
+   # --with-gd \
+   # --with-freetype-dir=/usr/include/ \
+   # --with-png-dir=/usr/include/ \
+   # --with-jpeg-dir=/usr/include/ && \
+  #NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) && \
+  #docker-php-ext-install -j${NPROC} gd && \
+  #apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev
+# nstall PHP extensions gd
+RUN apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev && docker-php-ext-configure gd --with-freetype --with-jpeg && docker-php-ext-install gd
 RUN docker-php-ext-install zip
 RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install bcmath
